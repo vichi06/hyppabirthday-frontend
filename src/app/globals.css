@@ -5,6 +5,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --oorange: #eb5729;
+  --bblue: #2293a3;
+  --sand: #f9f7eb;
+  --warning-border: #ffa300;
+  --warning-background: #fff1c6;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,7 +22,21 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+p {
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+small {
+  font-size: 12px;
 }
 
 @layer utilities {

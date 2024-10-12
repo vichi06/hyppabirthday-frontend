@@ -8,9 +8,17 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        oorange: "var(--oorange)",
+        bblue: "var(--bblue)",
+        sand: "var(--sand)",
+        warningBorder: "var(--warning-border)",
+        warningBackground: "var(--warning-background)",
       },
     },
   },
