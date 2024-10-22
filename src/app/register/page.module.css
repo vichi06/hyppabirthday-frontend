@@ -1,0 +1,21 @@
+.birthdayName {
+  min-width: 25px;
+  display: inline-flex;
+  width: auto;
+  border-bottom: 1px solid lightgray;
+  margin: 0 5px;
+  outline: none;
+  padding: 2px 0;
+}
+
+.birthdate {
+  border: 1px solid lightgray;
+  border-radius: 2px;
+  padding: 5px;
+  outline: none;
+
+  &:focus-visible {
+    border: 1px solid var(--oorange);
+  }
+}
+

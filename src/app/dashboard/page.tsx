@@ -5,6 +5,9 @@ import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Birthday } from "../types/birthday";
+import Link from "next/link";
+
+import { FaCaretRight } from "react-icons/fa";
 
 export default function Dashboard() {
   const [birthdays, setBirthdays] = useState([]);
@@ -49,7 +52,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchUserBirthdays();
-    console.log(birthdays);
   }, []);
 
   useEffect(() => {
@@ -63,15 +65,31 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-5">
-      <h1>Tableau de bord</h1>
+    <div className="p-5 w-full">
       <p>Bienvenue, {user.username}!</p>
       <p>Vos proches vous attendent :</p>
       {birthdays.map((b: Birthday, index: number) => (
-        <p key={index}>{b.name}</p>
+        <Link
+          href={`/dashboard/${b.id}`}
+          key={`birthday${index}`}
+          className="block text-white my-2 p-3 w-full bg-bblue"
+        >
+          <div className="flex justify-between items-center">
+            <div className="flex items-baseline gap-2">
+              <h1>{b.name}</h1> <small>{b.birthdate}</small>
+            </div>
+            <div>
+              <FaCaretRight />
+            </div>
+          </div>
+        </Link>
       ))}
-      {loading && <div>Loading</div>}
+      {loading && <div>Chargement des heureux élus...</div>}
       {error && <div>{error}</div>}
+      <Link href={"/buy"} className="">
+        C{"'"}est l{"'"}anniversaire d{"'"}une autre de vos connaissance ?
+        Achetez un nouveau pack
+      </Link>
     </div>
   );
 }

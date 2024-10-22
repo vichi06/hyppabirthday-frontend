@@ -1,0 +1,31 @@
+.inputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &:hover > div,
+  & input:not(:placeholder-shown) + div,
+  & input:focus + div {
+    left: 16px; 
+    transform: translateY(-27px); 
+    padding: 0 8px; 
+    font-size: 0.875rem; 
+  }
+
+  & > div {
+    position: absolute;
+    background-color: white;
+    left: 20px; 
+    transition: left 0.3s ease, transform 0.3s ease, padding 0.3s ease,
+      font-size 0.3s ease; 
+    font-size: 1rem; 
+  }
+
+  & input {
+    width: 100%;
+    border: 1px solid var(--bblue);
+    border-radius: 15px;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+}

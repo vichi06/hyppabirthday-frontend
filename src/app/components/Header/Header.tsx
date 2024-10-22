@@ -10,8 +10,10 @@ export default function Header() {
 
   return (
     <header className="bg-oorange text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-xl font-bold">hyppabirthday</h1>
+      <div className="flex justify-between items-center">
+        <Link href="/">
+          <h1 className="text-xl font-bold">hyppabirthday</h1>
+        </Link>
         <nav>
           {!user ? (
             <>
@@ -25,7 +27,7 @@ export default function Header() {
           ) : (
             <button
               onClick={logout}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              className="bg-white text-oorange px-4 py-2 transition rounded-3xl hover:bg-oorange hover:text-white"
             >
               Logout
             </button>

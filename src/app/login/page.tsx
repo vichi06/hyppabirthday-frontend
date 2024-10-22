@@ -5,6 +5,11 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 
+import AuthentificationWrapper from "../components/AuthentificationWrapper";
+
+import ForgotPassword from "../components/ForgotPassword";
+import SpecialInput from "../components/SpecialInput/SpecialInput";
+
 export default function LoginPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -12,6 +17,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [showForgotPassword, setShowForgotPassword] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,64 +41,53 @@ export default function LoginPage() {
   }, [user, router]);
 
   return (
-    <div className="flex flex-col md:flex-row gap-10 w-full">
-      <div className="flex-1 p-14">
-        {loading ? (
-          <p className="text-center">Chargement</p>
-        ) : (
-          <div>
-            <h1>Reviens vers nous!</h1>
-            <small>
-              Peu de données vous sont demandées. On s{"'"}en cogne légèrement
-              de qui vous êtes...
-            </small>
-
-            <form onSubmit={handleSubmit}>
+    <AuthentificationWrapper>
+      {loading ? (
+        <p>Chargement</p>
+      ) : (
+        <div>
+          {showForgotPassword ? (
+            <ForgotPassword onClose={() => setShowForgotPassword(false)} />
+          ) : (
+            <form onSubmit={handleSubmit} autoComplete="on" method="POST">
+              <h1>De retour par minou !</h1>
+              <p>Qui êtes-vous au juste?</p>
               {error && <p>{error}</p>}
-              <div className="my-2">
-                <label className="block">
-                  Email <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="email"
-                  placeholder="Email"
+              <div className="mt-14 mb-2 flex flex-col gap-5">
+                <SpecialInput
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="border-2 border-gray-300 rounded-md px-3 py-1.5 text-sm w-full"
+                  setValue={setEmail}
+                  type="email"
+                  label="Email"
+                  autoComplete="email"
+                  autofocus
                 />
-              </div>
-              <div className="my-2">
-                <label className="block">
-                  Mot de passe <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="password"
-                  placeholder="Mot de passe"
+                <SpecialInput
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="border-2 border-gray-300 rounded-md px-3 py-1.5 text-sm w-full"
+                  setValue={setPassword}
+                  type="password"
+                  label="Mot de passe"
+                  autoComplete="current-password"
                 />
               </div>
-              <div className="flex justify-between my-2">
-                <div>
-                  <input type="checkbox" />
-                  <p className="inline pl-1">Ne m{"'"}oublies pas</p>
-                </div>
-                <div>
-                  <a className="text-bblue">Mémoire courte ?</a>
-                </div>
+              <div className="flex justify-end">
+                <p
+                  onClick={() => setShowForgotPassword(true)}
+                  className="cursor-pointer text-sm hover:underline mb-5"
+                >
+                  T{"'"}as la mémoire courte ?
+                </p>
               </div>
               <button
                 type="submit"
-                className="bg-bblue text-white rounded-md py-3 w-full font-bold shadow-xl border-2 border-bblue transition hover:bg-white hover:text-bblue hover:border-2 hover:border-bblue"
+                className="group bg-bblue text-white rounded-xl py-3 w-full shadow-xl border border-bblue transition hover:bg-white hover:text-bblue hover:border-bblue"
               >
-                Allons-y !
+                Se connecter
               </button>
             </form>
-          </div>
-        )}
-      </div>
-      <div className="flex-1 bg-sand"></div>
-    </div>
+          )}
+        </div>
+      )}
+    </AuthentificationWrapper>
   );
 }

@@ -1,0 +1,43 @@
+.container {
+  position: relative;
+  & > div:first-child {
+    transition: 0.4s;
+    position: absolute;
+    z-index: 10;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-around;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+  }
+
+  & img {
+    object-fit: cover;
+    transition: 0.4s;
+  }
+
+  &:hover {
+    & > div:first-child {
+      opacity: 1;
+    }
+
+    & img,
+    & video {
+      filter: brightness(40%);
+    }
+  }
+}
+
+.utils {
+  flex: 1;
+  justify-items: center;
+  place-content: center;
+  height: 100%;
+  transition: 0.4s;
+
+  &:hover {
+    transform: scale(1.5);
+  }
+}

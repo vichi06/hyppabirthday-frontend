@@ -3,7 +3,8 @@
 
 import { useAuth } from "../context/AuthContext"; // Adjust the path to your AuthContext
 import Header from "./Header/Header"; // Import the Header component
-import Sidebar from "./SideBar"; // Import the Sidebar component
+import Sidebar from "./SideBar/SideBar"; // Import the Sidebar component
+import { usePathname } from "next/navigation";
 
 export default function ClientWrapper({
   children,
@@ -11,13 +12,20 @@ export default function ClientWrapper({
   children: React.ReactNode;
 }) {
   const { user } = useAuth(); // Use the authentication context
+  const pathname = usePathname();
+
+  console.log(pathname);
 
   return (
-    <div>
+    <div className={`flex min-h-screen ${!user ? "flex-col" : ""}`}>
       {/* Conditionally render Sidebar if user is logged in, otherwise render Header */}
-      {user ? <Sidebar /> : <Header />}
+      {pathname.includes("/happy-birthday") ? null : user ? (
+        <Sidebar />
+      ) : (
+        <Header />
+      )}
       {/* Main content area */}
-      <main className="flex">{children}</main>
+      <main className="flex flex-grow overflow-y-auto">{children}</main>
     </div>
   );
 }

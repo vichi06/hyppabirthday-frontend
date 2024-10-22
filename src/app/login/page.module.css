@@ -1,0 +1,30 @@
+.inputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &:hover > div,
+  & input:not(:placeholder-shown) + div {
+    left: 16px; /* Adjusted position when hovered */
+    transform: translateY(-27px); /* Move label up */
+    padding: 0 8px; /* Adjust padding on hover */
+    font-size: 0.875rem; /* Smaller font size on hover */
+  }
+
+  & > div {
+    position: absolute;
+    background-color: white;
+    left: 20px; /* Adjust as needed */
+    transition: left 0.3s ease, transform 0.3s ease, padding 0.3s ease,
+      font-size 0.3s ease; /* Smooth transition for multiple properties */
+    font-size: 1rem; /* Default font size */
+  }
+
+  & input {
+    width: 100%;
+    border: 1px solid var(--bblue);
+    border-radius: 15px;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+}

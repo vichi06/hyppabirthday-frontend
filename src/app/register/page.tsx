@@ -5,14 +5,16 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 
+import styles from "./page.module.css";
+
 // Components
-import EmailInput from "../components/EmailInput";
+import AuthentificationWrapper from "../components/AuthentificationWrapper";
+import SpecialInput from "../components/SpecialInput/SpecialInput";
 
 export default function RegisterPage() {
-  const [emails, setEmails] = useState<string[]>([]);
   const [birthdayName, setBirthdayName] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const [birthdayDate, setBirthdayDate] = useState<string>("");
+  const [birthdate, setBirthdate] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -30,8 +32,7 @@ export default function RegisterPage() {
     try {
       await register(username, email, password, {
         name: birthdayName,
-        date: new Date(birthdayDate),
-        participants: emails,
+        birthdate: birthdate,
       }).then(() => setLoading(false));
       router.push("/dashboard");
     } catch (error: unknown) {
@@ -57,99 +58,84 @@ export default function RegisterPage() {
       document.body.appendChild(tempSpan);
 
       const width = tempSpan.offsetWidth;
-      inputRef.current.style.width = `${width + 20}px`;
+      inputRef.current.style.width = `${width}px`;
 
       document.body.removeChild(tempSpan);
     }
   }, [birthdayName]);
 
   useEffect(() => {
-    if (user) {
-      router.push("/dashboard");
-    }
+    if (user) router.push("/dashboard");
   }, [user, router]);
 
   return (
-    <div className="flex flex-col gap-10 md:flex-row">
-      <div className="flex-1 p-14">
-        {loading ? (
-          <p className="text-center">Chargement</p>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <p>
-              C{"'"}est le <b>birthday</b> de{" "}
-              <input
-                ref={inputRef}
-                type="text"
-                placeholder=""
-                value={birthdayName}
-                onChange={(e) => setBirthdayName(e.target.value)}
-                className="min-w-[30px] shadow-md rounded-md mx-1 py-1 px-2 inline-flex w-auto border border-gray-300 focus-visible:border-oorange focus-visible:ring-oorange outline-none"
-                style={{ width: "auto" }} // Dynamically set the width  required
-              />{" "}
-              🎉 né(e) le{" "}
-              <input
-                type="date"
-                value={birthdayDate}
-                onChange={(e) => setBirthdayDate(e.target.value)}
-                className="border border-gray-300 focus-visible:border-oorange focus-visible:ring-oorange outline-none rounded-md px-2 py-1"
-                required
-              />
-            </p>
-            <p>Ajouter des participants</p>
-            <EmailInput emails={emails} setEmails={setEmails} />
-            <small>
-              Un email sera envoyé à chaque participant avec un lien vers le le
-              repository pour déposer des photos, vidéos ou commentaires. (Vous
-              pourrez effectuer cette opération plus tard également)
-            </small>
-            <h1>Créer son p&apos;tit compte</h1>
-            <small>
-              Peu de données vous sont demandées. On s&apos;en cogne légèrement
-              de qui vous êtes...
-            </small>
-            {error && <p>{error}</p>}
+    <AuthentificationWrapper>
+      {loading ? (
+        <p>Chargement</p>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <p className="pb-4">
+            C{"'"}est le <b>birthday</b> de{" "}
             <input
+              ref={inputRef}
               type="text"
-              placeholder="Surnom"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="my-1 w-full text-sm border border-gray-300 p-1 rounded-md focus-visible:border-oorange focus-visible:ring-oorange outline-none"
-              required
-            />
+              placeholder="???"
+              value={birthdayName}
+              className={styles.birthdayName}
+              onChange={(e) => setBirthdayName(e.target.value)}
+              autoFocus
+            />{" "}
+            🎉 né(e) le{" "}
             <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="my-1 w-full text-sm border border-gray-300 p-1 rounded-md focus-visible:border-oorange focus-visible:ring-oorange outline-none"
+              type="date"
+              value={birthdate}
+              onChange={(e) => setBirthdate(e.target.value)}
+              className={styles.birthdate}
               required
             />
-            <input
-              type="password"
-              placeholder="Mot de passe"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="my-1 w-full text-sm border border-gray-300 p-1 rounded-md focus-visible:border-oorange focus-visible:ring-oorange outline-none"
-              pattern="(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}"
-              title="Password must be at least 8 characters long, contain at least one number and one special character."
-              required
-            />
+            .
+          </p>
+          <div className={styles.register}>
+            <h1>Créer son p&apos;tit compte</h1>
+            <p>
+              (Peu de données vous sont demandées. On s&apos;en cogne légèrement
+              de qui vous êtes...)
+            </p>
+            {error && <p>{error}</p>}
+            <div className="flex flex-col gap-3 mt-2">
+              <SpecialInput
+                type="username"
+                label="Surnom"
+                value={username}
+                setValue={setUsername}
+              />
+              <SpecialInput
+                type="email"
+                label="Email"
+                value={email}
+                setValue={setEmail}
+              />
+              <SpecialInput
+                type="password"
+                label="Mot de passe"
+                value={password}
+                setValue={setPassword}
+              />
+            </div>
             <small className="text-bblue">
               Un mot de passe solide qui pousse à la salle c’est{" "}
               <b>8 caractères minimum, une lettre spéciale et un numéro !</b>
             </small>
             <button
               type="submit"
-              className="mt-2 bg-bblue text-white rounded-md py-3 w-full font-bold shadow-xl border-2 border-bblue transition hover:bg-white hover:text-bblue hover:border-2 hover:border-bblue"
+              className="mt-2 bg-bblue text-white rounded-3xl py-3 w-full font-bold shadow-xl border-2 border-bblue transition hover:bg-white hover:text-bblue hover:border-2 hover:border-bblue"
               disabled={loading}
             >
               {"S'inscrire"}
             </button>
-          </form>
-        )}
-      </div>
-      <div className="flex-1 bg-sand"></div>
-    </div>
+          </div>
+        </form>
+      )}
+    </AuthentificationWrapper>
   );
 }

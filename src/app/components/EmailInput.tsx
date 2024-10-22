@@ -40,7 +40,7 @@ const EmailInput: React.FC<ChildComponentProps> = ({ emails, setEmails }) => {
       <div className="border border-gray-300 rounded-md p-0.5 flex flex-wrap ">
         {emails.map((email, index) => (
           <span
-            key={index}
+            key={`email${index}`}
             className="flex items-center bg-blue-100 text-blue-800 px-2 py-1 rounded-full m-1"
           >
             {email}

@@ -1,6 +1,5 @@
-// app/types/birthday.ts
 export interface Birthday {
+  id?: number;
   name: string;
-  date: Date;
-  participants: string[];
+  birthdate: string;
 }
